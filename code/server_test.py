@@ -215,6 +215,31 @@ def pre_rec_acc_f1(tp, fp, tn, fn):
 
 
 
+def ranked_hamming_loss(true_labels, pred_labels, labels):
+
+    # store metrics scores to calculate average scores
+    # pre_list = []
+    # rec_list = []
+    # acc_list = []
+    # f1_list = []
+    mean_rhl = []
+    
+    for i in range(len(true_labels)):
+        # calculate label ranks and P array for the ground truth labels
+        ranks_true = rank_labels(labels, true_labels[i])
+        P_true = compare_ranks(ranks_true)
+
+        # calculate label ranks and P array for the predicted labels
+        ranks_pred = rank_labels(labels, pred_labels[i])
+        P_pred = compare_ranks(ranks_pred)
+        
+        mean_rhl.append(metrics.hamming_loss(P_true, P_pred))
+        
+    return statistics.fmean(mean_rhl)
+
+
+
+
 
 def calculate_metrics(true_labels, pred_labels, labels):
 
@@ -405,6 +430,8 @@ from sklearn.neighbors import KNeighborsClassifier
 mean_jw_1 = []
 # average hamming loss scores
 mean_hl_1 = []
+# average ranked hamming loss scores
+mean_rhl_1 = []
 # average precision scores
 mean_pre_1 = []
 # average recall scores
@@ -520,20 +547,23 @@ def run_clf1():
         mean_hl_1.append(metrics.hamming_loss(ytest_array, clf1_predictions_np))
         
         # get precision, recall, accuracy, f1 score
-        avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf1_predictions, labels)
-        mean_pre_1.append(avg_pre)
-        mean_rec_1.append(avg_rec)
-        mean_acc_1.append(avg_acc)
-        mean_f1_1.append(avg_f1)
+        # avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf1_predictions, labels)
+        # mean_pre_1.append(avg_pre)
+        # mean_rec_1.append(avg_rec)
+        # mean_acc_1.append(avg_acc)
+        # mean_f1_1.append(avg_f1)
+        
+        mean_rhl_1.append(ranked_hamming_loss(ytest_final, clf1_predictions, labels))
 
-    print(f"Average precision:\t{statistics.fmean(mean_pre_1):.2f}")
-    print(f"Average recall:\t\t{statistics.fmean(mean_rec_1):.2f}")
-    print(f"Average accuracy:\t{statistics.fmean(mean_acc_1):.2f}")
-    print(f"Average F1 score:\t{statistics.fmean(mean_f1_1):.2f}")
+    # print(f"Average precision:\t{statistics.fmean(mean_pre_1):.2f}")
+    # print(f"Average recall:\t\t{statistics.fmean(mean_rec_1):.2f}")
+    # print(f"Average accuracy:\t{statistics.fmean(mean_acc_1):.2f}")
+    # print(f"Average F1 score:\t{statistics.fmean(mean_f1_1):.2f}")
     
     print(f"Average Jaro-Winkler distance:\t{statistics.fmean(mean_jw_1):.2f}")
     # print(f"Average Hamming score distance:\t{statistics.fmean(mean_hl_1):.2f}")
     print(f"Average Hamming loss:\t{statistics.fmean(mean_hl_1):.2f}")
+    print(f"Average ranked Hamming loss:\t{statistics.fmean(mean_rhl_1):.2f}")
 
 
 
@@ -669,6 +699,8 @@ from sklearn.neighbors import KNeighborsClassifier
 mean_jw_2 = []
 # average hamming loss scores
 mean_hl_2 = []
+# average ranked hamming loss scores
+mean_rhl_2 = []
 # average precision scores
 mean_pre_2 = []
 # average recall scores
@@ -781,20 +813,23 @@ def run_clf2():
         mean_hl_2.append(metrics.hamming_loss(ytest_array, clf2_predictions_np))
         
         # get precision, recall, accuracy, f1 score
-        avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf2_predictions, labels)
-        mean_pre_2.append(avg_pre)
-        mean_rec_2.append(avg_rec)
-        mean_acc_2.append(avg_acc)
-        mean_f1_2.append(avg_f1)
+        # avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf2_predictions, labels)
+        # mean_pre_2.append(avg_pre)
+        # mean_rec_2.append(avg_rec)
+        # mean_acc_2.append(avg_acc)
+        # mean_f1_2.append(avg_f1)
+        
+        mean_rhl_2.append(ranked_hamming_loss(ytest_final, clf2_predictions, labels))
 
-    print(f"Average precision:\t{statistics.fmean(mean_pre_2):.2f}")
-    print(f"Average recall:\t\t{statistics.fmean(mean_rec_2):.2f}")
-    print(f"Average accuracy:\t{statistics.fmean(mean_acc_2):.2f}")
-    print(f"Average F1 score:\t{statistics.fmean(mean_f1_2):.2f}")
+    # print(f"Average precision:\t{statistics.fmean(mean_pre_2):.2f}")
+    # print(f"Average recall:\t\t{statistics.fmean(mean_rec_2):.2f}")
+    # print(f"Average accuracy:\t{statistics.fmean(mean_acc_2):.2f}")
+    # print(f"Average F1 score:\t{statistics.fmean(mean_f1_2):.2f}")
     
     print(f"Average Jaro-Winkler distance:\t{statistics.fmean(mean_jw_2):.2f}")
     # print(f"Average Hamming score distance:\t{statistics.fmean(mean_hl_2):.2f}")
     print(f"Average Hamming loss:\t{statistics.fmean(mean_hl_2):.2f}")
+    print(f"Average ranked Hamming loss:\t{statistics.fmean(mean_rhl_2):.2f}")
 
 
 run_clf2()
@@ -903,6 +938,8 @@ from sklearn.neighbors import KNeighborsClassifier
 mean_jw_3 = []
 # average hamming loss scores
 mean_hl_3 = []
+# average ranked hamming loss scores
+mean_rhl_3 = []
 # average precision scores
 mean_pre_3 = []
 # average recall scores
@@ -1016,20 +1053,23 @@ def run_clf3():
         mean_hl_3.append(metrics.hamming_loss(ytest_array, clf3_predictions_np))
         
         # get precision, recall, accuracy, f1 score
-        avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf3_predictions, labels)
-        mean_pre_3.append(avg_pre)
-        mean_rec_3.append(avg_rec)
-        mean_acc_3.append(avg_acc)
-        mean_f1_3.append(avg_f1)
+        # avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf3_predictions, labels)
+        # mean_pre_3.append(avg_pre)
+        # mean_rec_3.append(avg_rec)
+        # mean_acc_3.append(avg_acc)
+        # mean_f1_3.append(avg_f1)
+        
+        mean_rhl_3.append(ranked_hamming_loss(ytest_final, clf3_predictions, labels))
 
-    print(f"Average precision:\t{statistics.fmean(mean_pre_3):.2f}")
-    print(f"Average recall:\t\t{statistics.fmean(mean_rec_3):.2f}")
-    print(f"Average accuracy:\t{statistics.fmean(mean_acc_3):.2f}")
-    print(f"Average F1 score:\t{statistics.fmean(mean_f1_3):.2f}")
+    # print(f"Average precision:\t{statistics.fmean(mean_pre_3):.2f}")
+    # print(f"Average recall:\t\t{statistics.fmean(mean_rec_3):.2f}")
+    # print(f"Average accuracy:\t{statistics.fmean(mean_acc_3):.2f}")
+    # print(f"Average F1 score:\t{statistics.fmean(mean_f1_3):.2f}")
     
     print(f"Average Jaro-Winkler distance:\t{statistics.fmean(mean_jw_3):.2f}")
     # print(f"Average Hamming score distance:\t{statistics.fmean(mean_hl_3):.2f}")
     print(f"Average Hamming loss:\t{statistics.fmean(mean_hl_3):.2f}")
+    print(f"Average ranked Hamming loss:\t{statistics.fmean(mean_rhl_3):.2f}")
 
 
 run_clf3()
@@ -1142,6 +1182,8 @@ from sklearn.neighbors import KNeighborsClassifier
 mean_jw_4 = []
 # average hamming loss scores
 mean_hl_4 = []
+# average ranked hamming loss scores
+mean_rhl_4 = []
 # average precision scores
 mean_pre_4 = []
 # average recall scores
@@ -1255,20 +1297,23 @@ def run_clf4():
         mean_hl_4.append(metrics.hamming_loss(ytest_array, clf4_predictions_np))
         
         # get precision, recall, accuracy, f1 score
-        avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf4_predictions, labels)
-        mean_pre_4.append(avg_pre)
-        mean_rec_4.append(avg_rec)
-        mean_acc_4.append(avg_acc)
-        mean_f1_4.append(avg_f1)
+        # avg_pre, avg_rec, avg_acc, avg_f1 = calculate_metrics(ytest_final, clf4_predictions, labels)
+        # mean_pre_4.append(avg_pre)
+        # mean_rec_4.append(avg_rec)
+        # mean_acc_4.append(avg_acc)
+        # mean_f1_4.append(avg_f1)
+        
+        mean_rhl_4.append(ranked_hamming_loss(ytest_final, clf4_predictions, labels))
 
-    print(f"Average precision:\t{statistics.fmean(mean_pre_4):.2f}")
-    print(f"Average recall:\t\t{statistics.fmean(mean_rec_4):.2f}")
-    print(f"Average accuracy:\t{statistics.fmean(mean_acc_4):.2f}")
-    print(f"Average F1 score:\t{statistics.fmean(mean_f1_4):.2f}")
+    # print(f"Average precision:\t{statistics.fmean(mean_pre_4):.2f}")
+    # print(f"Average recall:\t\t{statistics.fmean(mean_rec_4):.2f}")
+    # print(f"Average accuracy:\t{statistics.fmean(mean_acc_4):.2f}")
+    # print(f"Average F1 score:\t{statistics.fmean(mean_f1_4):.2f}")
     
     print(f"Average Jaro-Winkler distance:\t{statistics.fmean(mean_jw_4):.2f}")
     # print(f"Average Hamming score distance:\t{statistics.fmean(mean_hl_4):.2f}")
     print(f"Average Hamming loss:\t{statistics.fmean(mean_hl_4):.2f}")
+    print(f"Average ranked Hamming loss:\t{statistics.fmean(mean_rhl_4):.2f}")
 
 
 run_clf4()
